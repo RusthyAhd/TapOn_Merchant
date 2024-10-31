@@ -30,7 +30,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Future<void> fetchProductDetails() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.11.21.83:3000/api/product/${widget.productId}'),
+        Uri.parse('http://10.11.12.149:3000/api/product/${widget.productId}'),
       );
 
       if (response.statusCode == 200) {

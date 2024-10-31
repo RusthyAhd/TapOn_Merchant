@@ -113,7 +113,7 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
     return GestureDetector(
       onTap: () async {
         try {
-          final response = await http.get(Uri.parse('http://10.11.21.83:3000/api/products/$label'));
+          final response = await http.get(Uri.parse('http://10.11.12.149:3000/api/products/$label'));
 
           if (response.statusCode == 200) {
             var jsonResponse = json.decode(response.body);
@@ -122,9 +122,10 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
             if (jsonResponse['products'] != null) {
               List<dynamic> productsData = jsonResponse['products'];
 
-              List<Map<String, String>> products = productsData.map((product) {
+              List<Map<String, dynamic>> products = productsData.map((product) {
                 return {
-                  'title': product['name'] as String? ?? '',
+                  '_id': product['_id'] as String? ?? '',
+                  'name': product['name'] as String? ?? '',
                   'price': product['price']?.toString() ?? '0',
                   'image': product['image'] as String? ?? '',
                   'description': product['description'] as String? ?? '',

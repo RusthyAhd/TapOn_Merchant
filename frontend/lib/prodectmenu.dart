@@ -1,5 +1,4 @@
 import 'package:TapOn_merchant/prodectdetails.dart';
-
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -38,7 +37,9 @@ class ProductMenu extends StatelessWidget {
             Text(
               'Welcome to $service service page!',
               style: const TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -56,7 +57,8 @@ class ProductMenu extends StatelessWidget {
     );
   }
 
-  Widget productTile(BuildContext context, Map<String, dynamic> product, String shopEmail) {
+  Widget productTile(
+      BuildContext context, Map<String, dynamic> product, String shopEmail) {
     String formattedImage = product['image'] ?? '';
     if (formattedImage.isNotEmpty && formattedImage.length % 4 != 0) {
       formattedImage += '=' * (4 - (formattedImage.length % 4));
@@ -71,7 +73,8 @@ class ProductMenu extends StatelessWidget {
         height: 100,
       );
     } catch (e) {
-      imageWidget = const Icon(Icons.broken_image, color: Colors.grey, size: 100);
+      imageWidget =
+          const Icon(Icons.broken_image, color: Colors.grey, size: 100);
     }
 
     return Card(
