@@ -1,7 +1,5 @@
-
 import 'package:TapOn_merchant/home.dart';
 import 'package:flutter/material.dart';
-
 
 class LaunchPage extends StatelessWidget {
   const LaunchPage({super.key});
@@ -27,7 +25,7 @@ class LaunchPage extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                const SizedBox(height: 40), 
+                const SizedBox(height: 40),
                 const Text(
                   'Discover new interests.',
                   style: TextStyle(

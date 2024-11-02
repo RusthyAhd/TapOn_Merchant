@@ -1,9 +1,10 @@
 import 'package:TapOn_merchant/Notification.dart';
-import 'package:TapOn_merchant/addtocart.dart';
+import 'package:TapOn_merchant/addtocart.dart' as addtocart;
 import 'package:TapOn_merchant/prodectmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:TapOn_merchant/addtocart.dart';
 
 class TapOnHomePage extends StatefulWidget {
   const TapOnHomePage({super.key});
@@ -63,12 +64,13 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.account_balance_wallet_outlined, color: Colors.black),
+                    icon: const Icon(Icons.add_shopping_cart,
+                        color: Colors.black),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const addtocart(),
+                          builder: (context) => addtocart.AddToCartPage(cartItems: []),
                         ),
                       );
                     },
@@ -91,11 +93,13 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   _buildServiceButton("Grocery", 'assets/grocery.png', context),
-                  _buildServiceButton("Beverages", 'assets/beverages.png', context),
+                  _buildServiceButton(
+                      "Beverages", 'assets/beverages.png', context),
                   _buildServiceButton("Snacks", 'assets/snacks.png', context),
                   _buildServiceButton("CBL", 'assets/cbl.png', context),
                   _buildServiceButton("Anchor", 'assets/anchor.png', context),
-                  _buildServiceButton("Household", 'assets/household.png', context),
+                  _buildServiceButton(
+                      "Household", 'assets/household.png', context),
                   _buildServiceButton("Bakery", 'assets/bakery.png', context),
                   _buildServiceButton("Dairy", 'assets/dairy.png', context),
                   _buildServiceButton("MY Cool", 'assets/my_cool.png', context),
@@ -109,11 +113,13 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
     );
   }
 
-  Widget _buildServiceButton(String label, String imagePath, BuildContext context) {
+  Widget _buildServiceButton(
+      String label, String imagePath, BuildContext context) {
     return GestureDetector(
       onTap: () async {
         try {
-          final response = await http.get(Uri.parse('http://10.11.12.149:3000/api/products/$label'));
+          final response = await http
+              .get(Uri.parse('http://10.11.12.149:5000/api/products/$label'));
 
           if (response.statusCode == 200) {
             var jsonResponse = json.decode(response.body);
@@ -182,3 +188,4 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
     );
   }
 }
+

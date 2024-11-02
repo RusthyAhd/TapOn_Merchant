@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'userrequest.dart'; // Ensure this import is correct
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -30,7 +31,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Future<void> fetchProductDetails() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.11.12.149:3000/api/product/${widget.productId}'),
+        Uri.parse('http://10.11.12.149:5000/api/tool/${widget.productId}'),
       );
 
       if (response.statusCode == 200) {
@@ -87,15 +88,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             SizedBox(
               height: 200,
               child: product?['image'] != null
-                  ? Image.memory(
-                      base64Decode(product!['image']),
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Icon(Icons.broken_image,
-                              size: 100, color: Colors.grey),
-                        );
-                      },
+                  ? Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image.memory(
+                          base64Decode(product!['image']),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Icon(Icons.broken_image,
+                                  size: 100, color: Colors.grey),
+                            );
+                          },
+                        ),
+                      ),
                     )
                   : const Center(
                       child: Icon(Icons.image, size: 100, color: Colors.grey)),
@@ -112,14 +122,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             const Divider(height: 24, thickness: 1),
             Text(
-              'Price: ${product?['price'] ?? 'N/A'}',
+              'Price: Rs. ${product?['price'] ?? 'N/A'}',
               style: const TextStyle(
                   fontSize: 24,
                   color: Colors.blue,
                   fontWeight: FontWeight.bold),
             ),
-            Text('Discount: ${product?['discount'] ?? 'No discount'}',
-                style: const TextStyle(fontSize: 16)),
+            Text(
+              'Discount: Rs. ${product?['discount'] ?? 'No discount'}',
+              style: const TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Original Price: Rs. ${product?['originalPrice'] ?? 'N/A'}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const Divider(height: 24, thickness: 1),
+            Text('Item Type: ${product?['itemType'] ?? 'No item type'}',
+                style: const TextStyle(fontSize: 14)),
             Text('Brand: ${product?['brand'] ?? 'No brand'}',
                 style: const TextStyle(fontSize: 14)),
             const Divider(height: 24, thickness: 1),
@@ -133,6 +153,28 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 16.0),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RequestToolsPage(
+                       // product: product,
+                       // shopEmail: widget.shopEmail,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Order'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.green, // Background color
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  textStyle: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
           ],
         ),
       ),

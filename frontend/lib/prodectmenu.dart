@@ -1,8 +1,10 @@
 import 'package:TapOn_merchant/prodectdetails.dart';
+import 'package:TapOn_merchant/addtocart.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class ProductMenu extends StatelessWidget {
+class ProductMenu extends StatefulWidget {
   final String service;
   final String shopName;
   final String shopEmail;
@@ -19,15 +21,63 @@ class ProductMenu extends StatelessWidget {
   });
 
   @override
+  _ProductMenuState createState() => _ProductMenuState();
+}
+
+class _ProductMenuState extends State<ProductMenu> {
+  List<Map<String, dynamic>> cartItems = [];
+
+  Future<void> addToCart(Map<String, dynamic> product) async {
+    final response = await http.post(
+      Uri.parse('http://10.11.12.149:5000/api/cart'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'productId': product['_id'],
+        'name': product['name'],
+        'price': product['price'],
+        'image': product['image'],
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      setState(() {
+        cartItems.add(product);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${product['name']} added to cart')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to add product to cart')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '$shopName Products',
+          '${widget.shopName} Products',
           style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
         ),
         backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddToCartPage(cartItems: cartItems),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -35,7 +85,7 @@ class ProductMenu extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome to $service service page!',
+              'Welcome to ${widget.service} service page!',
               style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -44,10 +94,10 @@ class ProductMenu extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: products.length,
+                itemCount: widget.products.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
-                  return productTile(context, product, shopEmail);
+                  final product = widget.products[index];
+                  return productTile(context, product, widget.shopEmail);
                 },
               ),
             ),
@@ -97,7 +147,7 @@ class ProductMenu extends StatelessWidget {
         trailing: IconButton(
           icon: const Icon(Icons.add_shopping_cart),
           onPressed: () {
-            // Add to cart logic can be added here
+            addToCart(product);
           },
         ),
         onTap: () {
