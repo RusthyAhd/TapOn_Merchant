@@ -24,7 +24,8 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text("TapOn", style: TextStyle(color: Colors.black)),
+        title:
+            const Text("TapOn Merchant", style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications, color: Colors.black),
@@ -70,7 +71,8 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => addtocart.AddToCartPage(cartItems: []),
+                          builder: (context) =>
+                              addtocart.AddToCartPage(cartItems: []),
                         ),
                       );
                     },
@@ -118,8 +120,8 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
     return GestureDetector(
       onTap: () async {
         try {
-          final response = await http
-              .get(Uri.parse('http://10.11.12.149:5000/api/products/$label'));
+          final response = await http.get(
+              Uri.parse('http://localhost:5000/api/tools/category/$label'));
 
           if (response.statusCode == 200) {
             var jsonResponse = json.decode(response.body);
@@ -188,4 +190,3 @@ class _TapOnHomePageState extends State<TapOnHomePage> {
     );
   }
 }
-

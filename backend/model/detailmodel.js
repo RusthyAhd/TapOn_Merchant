@@ -9,11 +9,11 @@ const productSchema = new mongoose.Schema({
   discount: { type: Number },
   totalAmount: { type: Number, required: true },
   address: { type: String },
-  brand: { type: String },
+  brand: { type: String }, 
   image: { type: String },
 });
 
 // Check if the model already exists before defining it
-const Product = mongoose.models.Product || mongoose.model('item', productSchema);
+const Product = mongoose.models.Product || mongoose.model('tools', productSchema);
 
 module.exports = Product;

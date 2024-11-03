@@ -1,7 +1,7 @@
+import 'package:TapOn_merchant/userrequest.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'userrequest.dart'; // Ensure this import is correct
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -31,7 +31,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Future<void> fetchProductDetails() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.11.12.149:5000/api/tool/${widget.productId}'),
+        Uri.parse('http://10.11.12.149:5000/api/tools/${widget.productId}'),
       );
 
       if (response.statusCode == 200) {
@@ -130,8 +130,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             Text(
               'Discount: Rs. ${product?['discount'] ?? 'No discount'}',
-              style: const TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text(
               'Original Price: Rs. ${product?['originalPrice'] ?? 'N/A'}',
@@ -160,9 +159,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => RequestToolsPage(
-                       // product: product,
-                       // shopEmail: widget.shopEmail,
-                      ),
+                          // product: product,
+                          // shopEmail: widget.shopEmail,
+                          ),
                     ),
                   );
                 },
@@ -170,7 +169,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.green, // Background color
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   textStyle: const TextStyle(fontSize: 16),
                 ),
               ),
